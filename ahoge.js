@@ -169,7 +169,7 @@ function croquetteOrPluto (game) {
 
 function tweet(){
     var score = resultTime;
-    var t = encodeURIComponent("私はコロッケと冥王星を見分けるのに " + score + " 秒かかりました。 #コロッケと冥王星を見極めるゲーム");
+    var t = encodeURIComponent("私はコロッケと冥王星を見分けるのに " + score + " 秒かかりました。 #コロッケと冥王星を見極めるゲーム #ahoge");
     var f = "http://twitter.com/intent/tweet?url=" + location.href + "&text=" + t;
     window.open(f, "null");
 }
