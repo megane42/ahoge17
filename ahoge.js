@@ -84,8 +84,9 @@ window.onload = function () {
         playScene.addChild(croquetteOrPluto(game));
 
         var left = new Sprite(100, 100);
+        moveRelative(left, 0.2, 0.8);
         left.image = game.assets[IMG_LIST[4]];
-        playScene.onleftbuttondown = function () {
+        left.ontouchstart = function () {
             if (nowShowing.match(/croquette/)) {
                 score += 1;
             } else {
@@ -94,13 +95,16 @@ window.onload = function () {
             playScene.removeChild(stuff);
             stuff = croquetteOrPluto(game);
             playScene.addChild(stuff);
+
+            console.log(this.x);
+            console.log(this.y);
         };
-        moveRelative(left, 0.2, 0.8);
         playScene.addChild(left);
 
         var right = new Sprite(100, 100);
+        moveRelative(right, 0.8, 0.8);
         right.image = game.assets[IMG_LIST[5]];
-        playScene.onrightbuttondown = function () {
+        right.ontouchstart = function () {
             if (nowShowing.match(/pluto/)) {
                 score += 1;
             } else {
@@ -109,8 +113,10 @@ window.onload = function () {
             playScene.removeChild(stuff);
             stuff = croquetteOrPluto(game);
             playScene.addChild(stuff);
+
+            console.log(this.x);
+            console.log(this.y);
         }
-        moveRelative(right, 0.8, 0.8);
         playScene.addChild(right);
 
         // result scene ----------------------------------------
