@@ -4,8 +4,12 @@ window.onload = function () {
     const FPS    = 30;
     const WIDTH  = 480;
     const HEIGHT = 480;
-    const IMG_LIST  = ['./croquette2.png', './pluto2.png','./croquette1.png', './pluto1.png', './left.png', './right.png'];
     const MAX_SCORE = 10;
+    const IMG_LIST  = [
+        './img/croquette2.png', './img/pluto2.png',
+        './img/croquette1.png', './img/pluto1.png',
+        './img/left.png', './img/right.png'
+    ];
 
     var nowShowing = "";
     var resultTime = 0;
