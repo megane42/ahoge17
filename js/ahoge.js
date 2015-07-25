@@ -8,7 +8,8 @@ window.onload = function () {
     const IMG_LIST  = [
         './img/croquette2.png', './img/pluto2.png',
         './img/croquette1.png', './img/pluto1.png',
-        './img/left.png', './img/right.png'
+        './img/left.png', './img/right.png',
+        './img/croquette3.jpg', './img/pluto3.jpg'
     ];
 
     var nowShowing = "";
@@ -172,7 +173,11 @@ window.onload = function () {
     }
 
     function croquetteOrPluto(sprite) {
-        nowShowing = IMG_LIST[Math.floor(Math.random()*2)];
+        if (score == MAX_SCORE - 1) {
+            nowShowing = IMG_LIST[Math.floor(Math.random()*2) + 6];
+        } else {
+            nowShowing = IMG_LIST[Math.floor(Math.random()*2)];
+        }
         sprite.image = game.assets[nowShowing];
     }
 
