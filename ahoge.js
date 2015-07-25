@@ -1,27 +1,26 @@
 enchant();
-
-const FPS = 30;
-const WIDTH = 480;
-const HEIGHT = 480;
-const IMG_LIST = ['./croquette2.png', './pluto2.png','./croquette1.png', './pluto1.png', './left.png', './right.png'];
-const MAX_SCORE = 10;
-
-var nowShowing = "";
-var score = 0;
-var resultTime = 0;
-
 window.onload = function () {
+
+    const FPS    = 30;
+    const WIDTH  = 480;
+    const HEIGHT = 480;
+    const IMG_LIST  = ['./croquette2.png', './pluto2.png','./croquette1.png', './pluto1.png', './left.png', './right.png'];
+    const MAX_SCORE = 10;
+
+    var nowShowing = "";
+    var resultTime = 0;
+    var score = 0;
 
     var game = new Core(WIDTH, HEIGHT);
     game.fps = FPS;
     game.preload.apply(game, IMG_LIST);
 
     game.onload = function() {
-        var titleScene = new Scene();
-        var playScene = new Scene();
+        var titleScene  = new Scene();
+        var playScene   = new Scene();
         var resultScene = new Scene();
-        titleScene.backgroundColor = "black";
-        playScene.backgroundColor = "black";
+        titleScene.backgroundColor  = "black";
+        playScene.backgroundColor   = "black";
         resultScene.backgroundColor = "black";
 
         // title scene ----------------------------------------
@@ -80,7 +79,7 @@ window.onload = function () {
 
             // Set x & y manually HERE because:
             //  * scoreLabel._boundWidth changes depending on the text length.
-            //  * I want to put scoreLabel at upper right (moveCenterWithPercent() is not suitable.)
+            //  * put scoreLabel at upper right (moveCenterWithPercent() is not suitable.)
             scoreLabel.x = WIDTH - scoreLabel._boundWidth;
             scoreLabel.y = 0.0;
 
@@ -93,36 +92,20 @@ window.onload = function () {
         playScene.addChild(scoreLabel);
 
         var stuff = new Sprite(256, 256);
-        croquetteOrPluto(game, stuff);
+        croquetteOrPluto(stuff);
         moveCenterWithPercent(stuff, 0.5, 0.4);
         playScene.addChild(stuff);
 
         var left = new Sprite(100, 100);
-        left.image = game.assets[IMG_LIST[4]];
         moveCenterWithPercent(left, 0.1, 0.8);
-        var onGetLeft = function () {
-            if (nowShowing.match(/croquette/)) {
-                score += 1;
-            } else {
-                score -= 1;
-            }
-            croquetteOrPluto(game, stuff);
-        };
+        left.image = game.assets[IMG_LIST[4]];
         left.ontouchstart = onGetLeft;
         playScene.onleftbuttondown = onGetLeft;
         playScene.addChild(left);
 
         var right = new Sprite(100, 100);
-        right.image = game.assets[IMG_LIST[5]];
         moveCenterWithPercent(right, 0.9, 0.8);
-        var onGetRight = function () {
-            if (nowShowing.match(/pluto/)) {
-                score += 1;
-            } else {
-                score -= 1;
-            }
-            croquetteOrPluto(game, stuff);
-        }
+        right.image = game.assets[IMG_LIST[5]];
         right.ontouchstart = onGetRight;
         playScene.onrightbuttondown = onGetRight;
         playScene.addChild(right);
@@ -158,31 +141,41 @@ window.onload = function () {
         moveCenterWithPercent(tweetButton, 0.68, 0.8);
         resultScene.addChild(tweetButton);
 
-        resultScene.onenter = function () {
+        resultScene.onenter = function() {
             resultTimeLabel.text = resultTime + ' Sec.';
         }
 
         //  --------------------------------------------------
+        function onGetLeft() {
+            nowShowing.match(/croquette/) ? score += 1 : score -= 1;
+            croquetteOrPluto(stuff);
+        };
 
+        function onGetRight() {
+            nowShowing.match(/pluto/) ? score += 1 : score -= 1;
+            croquetteOrPluto(stuff);
+        }
+
+        //  --------------------------------------------------
         game.pushScene(titleScene);
     };
 
     game.start();
+
+    function moveCenterWithPercent(obj, x, y) {
+        obj.x = x * WIDTH - obj.width * 0.5;
+        obj.y = y * HEIGHT - obj.height * 0.5;
+    }
+
+    function croquetteOrPluto(sprite) {
+        nowShowing = IMG_LIST[Math.floor(Math.random()*2)];
+        sprite.image = game.assets[nowShowing];
+    }
+
+    function tweet(){
+        var score = resultTime;
+        var t = encodeURIComponent("私はコロッケと冥王星を見分けるのに " + score + " 秒かかりました。 #コロッケと冥王星を見極めるゲーム #ahoge");
+        var f = "http://twitter.com/intent/tweet?url=" + location.href + "&text=" + t;
+        window.open(f, "null");
+    }
 };
-
-function moveCenterWithPercent (obj, x, y) {
-    obj.x = x * WIDTH - obj.width * 0.5;
-    obj.y = y * HEIGHT - obj.height * 0.5;
-}
-
-function croquetteOrPluto (game, sprite) {
-    nowShowing = IMG_LIST[Math.floor(Math.random()*2)];
-    sprite.image = game.assets[nowShowing];
-}
-
-function tweet(){
-    var score = resultTime;
-    var t = encodeURIComponent("私はコロッケと冥王星を見分けるのに " + score + " 秒かかりました。 #コロッケと冥王星を見極めるゲーム #ahoge");
-    var f = "http://twitter.com/intent/tweet?url=" + location.href + "&text=" + t;
-    window.open(f, "null");
-}
