@@ -28,30 +28,32 @@ window.onload = function () {
 
         var titleLabel = new Label("Croquette or Pluto");
         titleLabel.textAlign = "center";
-        titleLabel.font = "32px Contrail One";
+        titleLabel.font = "40px Contrail One";
         titleLabel.color = 'white';
-        moveCenterWithPercent(titleLabel, 0.5, 0.2);
+        titleLabel.width = titleLabel._boundWidth;
+        moveCenterWithPercent(titleLabel, 0.5, 0.1);
         titleScene.addChild(titleLabel);
 
-        var titleButton = new Button("Start", "light", 32, 80);
-        titleButton.font = "24px Contrail One";
+        var titleButton = new Button("Start", "light", 42, 120);
+        titleButton.font = "32px Contrail One";
         titleButton.ontouchend = function() {
             lastActionFrame = game.frame;
             game.replaceScene(playScene);
         }
-        moveCenterWithPercent(titleButton, 0.5, 0.8);
+        // It seems that x = 0.48 is more proper than 0.5 for centering. Why?
+        moveCenterWithPercent(titleButton, 0.48, 0.85);
         titleScene.addChild(titleButton);
 
         var titleCroquette = new Sprite(256, 256);
         titleCroquette.image = game.assets[IMG_LIST[2]];
-        titleCroquette.scale(0.6, 0.6);
-        moveCenterWithPercent(titleCroquette, 0.3, 0.5);
+        titleCroquette.scale(0.65, 0.65);
+        moveCenterWithPercent(titleCroquette, 0.27, 0.5);
         titleScene.addChild(titleCroquette);
 
         var titlePlute = new Sprite(256, 256);
         titlePlute.image = game.assets[IMG_LIST[3]];
-        titlePlute.scale(0.6, 0.6);
-        moveCenterWithPercent(titlePlute, 0.7, 0.5);
+        titlePlute.scale(0.65, 0.65);
+        moveCenterWithPercent(titlePlute, 0.73, 0.5);
         titleScene.addChild(titlePlute);
 
         // play scene ----------------------------------------
@@ -95,7 +97,7 @@ window.onload = function () {
 
         var left = new Sprite(100, 100);
         left.image = game.assets[IMG_LIST[4]];
-        moveCenterWithPercent(left, 0.2, 0.8);
+        moveCenterWithPercent(left, 0.1, 0.8);
         var onGetLeft = function () {
             if (nowShowing.match(/croquette/)) {
                 score += 1;
@@ -112,7 +114,7 @@ window.onload = function () {
 
         var right = new Sprite(100, 100);
         right.image = game.assets[IMG_LIST[5]];
-        moveCenterWithPercent(right, 0.8, 0.8);
+        moveCenterWithPercent(right, 0.9, 0.8);
         var onGetRight = function () {
             if (nowShowing.match(/pluto/)) {
                 score += 1;
@@ -149,13 +151,13 @@ window.onload = function () {
             lastActionFrame = game.frame;
             game.replaceScene(playScene);
         }
-        moveCenterWithPercent(retryButton, 0.3, 0.8);
+        moveCenterWithPercent(retryButton, 0.28, 0.8);
         resultScene.addChild(retryButton);
 
         var tweetButton = new Button("Tweet", "light", 32, 80);
         tweetButton.font = "24px Contrail One";
         tweetButton.ontouchend = tweet;
-        moveCenterWithPercent(tweetButton, 0.7, 0.8);
+        moveCenterWithPercent(tweetButton, 0.68, 0.8);
         resultScene.addChild(tweetButton);
 
         resultScene.onenter = function () {

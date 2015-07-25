@@ -1,7 +1,45 @@
+body {
+    text-align: center;
+    color: #FFFFFF;
+    font-family: 'Contrail One', sans-serif;
+
+    background: #1f2544;
+    background: -moz-linear-gradient(left, #0f1534 0%, #000000 30%, #000000 70%, #0f1534 100%);
+    background: -webkit-gradient(linear, left top, right top,
+                                 color-stop(0%,#0f1534), color-stop(30%,#000000),
+                                 color-stop(70%,#000000), color-stop(100%,#0f1534));
+    background: -webkit-linear-gradient(left, #0f1534 0%,#000000 30%,#000000 70%,#0f1534 100%);
+    background: -o-linear-gradient(left, #0f1534 0%,#000000 30%,#000000 70%,#0f1534 100%);
+    background: -ms-linear-gradient(left, #0f1534 0%,#000000 30%,#000000 70%,#0f1534 100%);
+    background: linear-gradient(to right, #0f1534 0%,#000000 30%,#000000 70%,#0f1534 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f1534', endColorstr='#0f1534',GradientType=1 );
+}
+
 #enchant-stage {
-    width: 480px;
-    height: 480px;
     margin: 0 auto 0 auto;
-    border-style: solid;
-    border-width: 1px;
+    width : 480px;
+    height: 480px;
+    /*
+      border-style: solid;
+      border-width: 1px;
+    */
+}
+
+a {
+    color: #87CEFA;
+}
+
+ul {
+    list-style-type: none;
+    margin-top: 0px;
+}
+
+li {
+    margin-left: -2em;
+}
+
+img {
+    width: 48px;
+    height: 48px;
+    margin: 20px;
 }
