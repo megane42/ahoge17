@@ -92,8 +92,10 @@ window.onload = function () {
         }
         playScene.addChild(scoreLabel);
 
-        var stuff = croquetteOrPluto(game)
-        playScene.addChild(croquetteOrPluto(game));
+        var stuff = new Sprite(256, 256);
+        croquetteOrPluto(game, stuff);
+        moveCenterWithPercent(stuff, 0.5, 0.4);
+        playScene.addChild(stuff);
 
         var left = new Sprite(100, 100);
         left.image = game.assets[IMG_LIST[4]];
@@ -104,9 +106,7 @@ window.onload = function () {
             } else {
                 score -= 1;
             }
-            playScene.removeChild(stuff);
-            stuff = croquetteOrPluto(game);
-            playScene.addChild(stuff);
+            croquetteOrPluto(game, stuff);
         };
         left.ontouchstart = onGetLeft;
         playScene.onleftbuttondown = onGetLeft;
@@ -121,9 +121,7 @@ window.onload = function () {
             } else {
                 score -= 1;
             }
-            playScene.removeChild(stuff);
-            stuff = croquetteOrPluto(game);
-            playScene.addChild(stuff);
+            croquetteOrPluto(game, stuff);
         }
         right.ontouchstart = onGetRight;
         playScene.onrightbuttondown = onGetRight;
@@ -177,12 +175,9 @@ function moveCenterWithPercent (obj, x, y) {
     obj.y = y * HEIGHT - obj.height * 0.5;
 }
 
-function croquetteOrPluto (game) {
-    var stuff = new Sprite(256, 256);
+function croquetteOrPluto (game, sprite) {
     nowShowing = IMG_LIST[Math.floor(Math.random()*2)];
-    stuff.image = game.assets[nowShowing];
-    moveCenterWithPercent(stuff, 0.5, 0.4);
-    return stuff;
+    sprite.image = game.assets[nowShowing];
 }
 
 function tweet(){
