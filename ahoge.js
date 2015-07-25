@@ -4,6 +4,7 @@ const FPS = 30;
 const WIDTH = 480;
 const HEIGHT = 480;
 const IMG_LIST = ['./croquette2.png', './pluto2.png', './croquette1.png', './pluto1.png', './left.png', './right.png'];
+const MAX_SCORE = 10;
 
 var nowShowing = "";
 var score = 0;
@@ -61,6 +62,7 @@ window.onload = function () {
         }
 
         var timerLabel = new Label();
+        timerLabel.font = "32px Contrail One";
         timerLabel.color = 'white';
         timerLabel.onenterframe = function () {
             timerLabel.text = ((game.frame - firstFrame) / FPS).toFixed(2);
@@ -68,16 +70,19 @@ window.onload = function () {
         playScene.addChild(timerLabel);
 
         var scoreLabel = new Label();
+        scoreLabel.font = "32px Contrail One";
         scoreLabel.color = 'white';
+        // TODO: Use a custom event which is triggered when the score chenges.
         scoreLabel.onenterframe = function () {
-            scoreLabel.text = score + ' / 10';
-            if (score >= 10) {
+            scoreLabel.text = score + ' / ' + MAX_SCORE;
+            scoreLabel.x = WIDTH - scoreLabel._boundWidth;
+            scoreLabel.y = 0.0;
+            if (score >= MAX_SCORE) {
                 score = 0;
                 resultTime = ((game.frame - firstFrame) / FPS).toFixed(2);
                 game.replaceScene(resultScene);
             }
         }
-        moveRelative(scoreLabel, 0.75, 0.0);
         playScene.addChild(scoreLabel);
 
         var stuff = croquetteOrPluto(game)
