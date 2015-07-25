@@ -3,7 +3,7 @@ enchant();
 const FPS = 30;
 const WIDTH = 480;
 const HEIGHT = 480;
-const IMG_LIST = ['./croquette2.png', './pluto2.png', './croquette1.png', './pluto1.png', './left.png', './right.png'];
+const IMG_LIST = ['./croquette2.png', './pluto2.png','./croquette1.png', './pluto1.png', './left.png', './right.png'];
 const MAX_SCORE = 10;
 
 var nowShowing = "";
@@ -30,7 +30,7 @@ window.onload = function () {
         titleLabel.textAlign = "center";
         titleLabel.font = "32px Contrail One";
         titleLabel.color = 'white';
-        moveRelative(titleLabel, 0.5, 0.2);
+        moveCenterWithPercent(titleLabel, 0.5, 0.2);
         titleScene.addChild(titleLabel);
 
         var titleButton = new Button("Start", "light", 32, 80);
@@ -39,19 +39,19 @@ window.onload = function () {
             lastActionFrame = game.frame;
             game.replaceScene(playScene);
         }
-        moveRelative(titleButton, 0.5, 0.8);
+        moveCenterWithPercent(titleButton, 0.5, 0.8);
         titleScene.addChild(titleButton);
 
         var titleCroquette = new Sprite(256, 256);
         titleCroquette.image = game.assets[IMG_LIST[2]];
         titleCroquette.scale(0.6, 0.6);
-        moveRelative(titleCroquette, 0.3, 0.5);
+        moveCenterWithPercent(titleCroquette, 0.3, 0.5);
         titleScene.addChild(titleCroquette);
 
         var titlePlute = new Sprite(256, 256);
         titlePlute.image = game.assets[IMG_LIST[3]];
         titlePlute.scale(0.6, 0.6);
-        moveRelative(titlePlute, 0.7, 0.5);
+        moveCenterWithPercent(titlePlute, 0.7, 0.5);
         titleScene.addChild(titlePlute);
 
         // play scene ----------------------------------------
@@ -75,8 +75,13 @@ window.onload = function () {
         // TODO: Use a custom event which is triggered when the score chenges.
         scoreLabel.onenterframe = function () {
             scoreLabel.text = score + ' / ' + MAX_SCORE;
+
+            // Set x & y manually HERE because:
+            //  * scoreLabel._boundWidth changes depending on the text length.
+            //  * I want to put scoreLabel at upper right (moveCenterWithPercent() is not suitable.)
             scoreLabel.x = WIDTH - scoreLabel._boundWidth;
             scoreLabel.y = 0.0;
+
             if (score >= MAX_SCORE) {
                 score = 0;
                 resultTime = ((game.frame - firstFrame) / FPS).toFixed(2);
@@ -89,9 +94,9 @@ window.onload = function () {
         playScene.addChild(croquetteOrPluto(game));
 
         var left = new Sprite(100, 100);
-        moveRelative(left, 0.2, 0.8);
         left.image = game.assets[IMG_LIST[4]];
-        left.ontouchstart = function () {
+        moveCenterWithPercent(left, 0.2, 0.8);
+        var onGetLeft = function () {
             if (nowShowing.match(/croquette/)) {
                 score += 1;
             } else {
@@ -100,16 +105,15 @@ window.onload = function () {
             playScene.removeChild(stuff);
             stuff = croquetteOrPluto(game);
             playScene.addChild(stuff);
-
-            console.log(this.x);
-            console.log(this.y);
         };
+        left.ontouchstart = onGetLeft;
+        playScene.onleftbuttondown = onGetLeft;
         playScene.addChild(left);
 
         var right = new Sprite(100, 100);
-        moveRelative(right, 0.8, 0.8);
         right.image = game.assets[IMG_LIST[5]];
-        right.ontouchstart = function () {
+        moveCenterWithPercent(right, 0.8, 0.8);
+        var onGetRight = function () {
             if (nowShowing.match(/pluto/)) {
                 score += 1;
             } else {
@@ -118,10 +122,9 @@ window.onload = function () {
             playScene.removeChild(stuff);
             stuff = croquetteOrPluto(game);
             playScene.addChild(stuff);
-
-            console.log(this.x);
-            console.log(this.y);
         }
+        right.ontouchstart = onGetRight;
+        playScene.onrightbuttondown = onGetRight;
         playScene.addChild(right);
 
         // result scene ----------------------------------------
@@ -129,7 +132,7 @@ window.onload = function () {
         resultLabel.textAlign = "center";
         resultLabel.font = "32px Contrail One";
         resultLabel.color = 'white';
-        moveRelative(resultLabel, 0.5, 0.2);
+        moveCenterWithPercent(resultLabel, 0.5, 0.2);
         resultScene.addChild(resultLabel);
 
         var resultTimeLabel = new Label();
@@ -137,7 +140,7 @@ window.onload = function () {
         resultTimeLabel.textAlign = "center";
         resultTimeLabel.font = "48px Contrail One";
         resultTimeLabel.color = 'white';
-        moveRelative(resultTimeLabel, 0.5, 0.5);
+        moveCenterWithPercent(resultTimeLabel, 0.5, 0.5);
         resultScene.addChild(resultTimeLabel);
 
         var retryButton = new Button("Restart", "light", 32, 80);
@@ -146,13 +149,13 @@ window.onload = function () {
             lastActionFrame = game.frame;
             game.replaceScene(playScene);
         }
-        moveRelative(retryButton, 0.3, 0.8);
+        moveCenterWithPercent(retryButton, 0.3, 0.8);
         resultScene.addChild(retryButton);
 
         var tweetButton = new Button("Tweet", "light", 32, 80);
         tweetButton.font = "24px Contrail One";
         tweetButton.ontouchend = tweet;
-        moveRelative(tweetButton, 0.7, 0.8);
+        moveCenterWithPercent(tweetButton, 0.7, 0.8);
         resultScene.addChild(tweetButton);
 
         resultScene.onenter = function () {
@@ -160,12 +163,14 @@ window.onload = function () {
         }
 
         //  --------------------------------------------------
+
         game.pushScene(titleScene);
     };
+
     game.start();
 };
 
-function moveRelative (obj, x, y) {
+function moveCenterWithPercent (obj, x, y) {
     obj.x = x * WIDTH - obj.width * 0.5;
     obj.y = y * HEIGHT - obj.height * 0.5;
 }
@@ -174,7 +179,7 @@ function croquetteOrPluto (game) {
     var stuff = new Sprite(256, 256);
     nowShowing = IMG_LIST[Math.floor(Math.random()*2)];
     stuff.image = game.assets[nowShowing];
-    moveRelative(stuff, 0.5, 0.4);
+    moveCenterWithPercent(stuff, 0.5, 0.4);
     return stuff;
 }
 
